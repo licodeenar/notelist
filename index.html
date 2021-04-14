@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <title>【note】おともだちリスト</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://licodeenar.github.io/notelist/img/og-image.png">
+    <meta property="og:title" content="【note】おともだちリスト">
+    <meta property="og:description" content="noteのフォロー・フォロワーを一括取得するサイト">
+    <meta property="og:locale" content="ja_JP">
+    <link rel="icon" href="img/favicon.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link media="all" href="assets/style.css" rel="stylesheet">
+    <script type='text/javascript' src='assets/script.js'></script>
+
+</head>
+
+<body>
+    <header>
+        <a href="https://note.com/licodeenar/n/nc6364f6b326f"><img class="cp_icon" src="img/favicon.png"></a>
+    </header>
+    <main class="cat_top">
+        <div class="cp_contents">
+            <h1>【note】おともだちリスト</h1>
+            <div class="cp_explain">
+                ・フォロー/フォロワーを一括表示します。
+                <br>・表示できるおともだちは最大400人までです。
+                <br> ・おともだちが多いとそこそこ時間かかります。
+            </div><br>
+
+
+            <!-- 情報入力 -->
+            <form id="setting" action="JavaScript:getNoteList()">
+                <div class="cp_radio">
+                    <input type="radio" id="note_key1" name="note_key" value="followings" checked="checked">
+                    <label for="note_key1">フォローしている</label><br>
+                    <input type="radio" id="note_key2" name="note_key" value="followers">
+                    <label for="note_key2">フォローされている</label><br>
+                </div><br>
+                <input type="text" class="cp_input" id="note_id" placeholder="noteのIDを入力"><br>
+                <input type="button" class="cp_button" id="note_exe" value="リストを取得する" onclick="getNoteList()">
+            </form>
+            <script>
+                document.getElementById('note_id').focus();
+            </script>
+
+            <!--- 実行結果を表示 --->
+            <div id="note_result" class="result-table"></div>
+
+        </div>
+    </main>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L8WE2GBHQ3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+
+        gtag("config", "G-L8WE2GBHQ3");
+    </script>
+    <!-- // ここまで Google Analytics -->
+</body>
+
+</html>

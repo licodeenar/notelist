@@ -1,0 +1,200 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 2.0rem;
+    margin: 0px;
+    text-align: center;
+    color: #333;
+    font-family: "Open Sans", "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", sans-serif;
+}
+
+header {
+    text-align: right;
+    padding: 16px 20px;
+    height: 32px;
+    margin: 0px;
+    border-bottom: solid 1px #ccc;
+}
+
+header .cp_icon {
+    width: 32px;
+}
+
+a {
+    color: #2cb696;
+}
+
+@media (max-width: 670px) {
+    /* スマホ */
+    main {
+        margin: 0 auto;
+        width: 100%;
+    }
+    h1 {
+        font-size: 2.5rem;
+    }
+    .cp_explain {
+        text-align: left;
+        display: inline-block;
+        margin: 30px 0px;
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 1100px) and (min-width: 671px) {
+    /* タブレット */
+    main {
+        margin: 0 auto;
+        width: 671px;
+    }
+    h1 {
+        font-size: 3.5rem;
+    }
+    .cp_explain {
+        text-align: left;
+        display: inline-block;
+        margin: 30px 0px;
+    }
+}
+
+@media (min-width: 1101px) {
+    /* パソコン */
+    main {
+        margin: 0 auto;
+        width: 671px;
+    }
+    h1 {
+        font-size: 3.5rem;
+    }
+    .cp_explain {
+        text-align: left;
+        display: inline-block;
+        margin: 30px 0px;
+    }
+}
+
+.cp_contents {
+    margin: 20px;
+}
+
+
+/* テーブル */
+
+.note_list {
+    border-collapse: collapse;
+    border: solid 2px #2cb696;
+    width: 100%;
+}
+
+.note_list td {
+    padding: 20px;
+    border: 1px #000;
+    color: #333;
+}
+
+.note_list th {
+    color: #2cb696;
+    background: #f5ffe5;
+    padding: 10px 20px;
+}
+
+.note_list th,
+.note_list td {
+    border: dashed 1px #2cb696;
+}
+
+.result-table {
+    margin: 10px 0px;
+    width: 100%;
+}
+
+
+/* インプット */
+
+.cp_input {
+    margin: 10px 0px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2.0rem;
+    letter-spacing: 1px;
+    color: #333;
+    border: 1px solid #2cb696;
+    border-radius: 50vh;
+    font-size: 2.0rem;
+    font-family: "Open Sans", "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", sans-serif;
+    outline: none;
+}
+
+
+/* ボタン */
+
+.cp_button {
+    -webkit-appearance: none;
+    margin: 10px 0px;
+    color: #fff;
+    background-color: #2cb696;
+    border-radius: 100vh;
+    border: 0px;
+    padding: 2.0rem 4.0rem;
+    font-size: 2.0rem;
+    font-family: "Open Sans", "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", sans-serif;
+    outline: none;
+}
+
+.cp_button:active {
+    background-color: #7bcebb;
+    outline: none;
+}
+
+
+/* ラジオボタン */
+
+.cp_radio {
+    text-align: left;
+    display: inline-block;
+    margin: 10px 0px;
+}
+
+.cp_radio label {
+    padding: 0 0 0 32px;
+    /* ラベルの位置 */
+    line-height: 33px;
+    /* ボタンのサイズに合わせる */
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+}
+
+.cp_radio label:before {
+    content: '';
+    width: 28px;
+    /* ボタンの横幅 */
+    height: 28px;
+    /* ボタンの縦幅 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #2cb696;
+    border-radius: 50%;
+}
+
+.cp_radio input[type="radio"] {
+    display: none;
+}
+
+.cp_radio input[type="radio"]:checked+label:after {
+    content: '';
+    width: 10px;
+    /* マークの横幅 */
+    height: 10px;
+    /* マークの縦幅 */
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-color: #fff;
+    border-radius: 50%;
+}
