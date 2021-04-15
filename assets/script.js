@@ -6,6 +6,7 @@ function getNoteList() {
     let url = 'https://script.google.com/macros/s/' + api_key +
         '/exec?id=' + form.note_id.value +
         '&key=' + form.note_key.value;
+    let isJson = form.note_json.checked;
 
     //テーブルをクリア＆フォームをロック
     document.getElementById(resultDispId).innerHTML = 'しばらく時間がかかります。。。';
@@ -18,9 +19,9 @@ function getNoteList() {
             setFormDisabled(false);
             if (req.status == 200) {
                 //結果を出力
-                drawTable(req.responseText, resultDispId);
+                drawTable(req.responseText, resultDispId, isJson);
             } else {
-                drawTable('', resultDispId);
+                drawTable('', resultDispId, isJson);
             }
         }
     };
@@ -32,24 +33,29 @@ function setFormDisabled(lock) {
     document.getElementById('note_id').disabled = lock;
 }
 
-function drawTable(jasons, elementId) {
+function drawTable(jasons, elementId, isJson) {
     let obj;
     let html = '';
 
     if (jasons == '"error"' || jasons == '') {
         document.getElementById(elementId).innerHTML = '情報を取得できませんでした。';
     } else {
-        obj = JSON.parse(jasons);
-        html = '<table class="note_list"><tr><th>#</th><th>ID / なまえ</th></tr>'
-        for (let i = 0; i < obj.length; i++) {
-            html += '<tr><td class="note_data_id">' +
-                (i + 1) + '</td><td>' +
-                '<a href="' + obj[i].url + '" target="_blank">' +
-                obj[i].id + '</a><br><div class="note_data_name">' +
-                obj[i].name + '</div></td></tr>';
-        }
-        html += '</table>';
+        if (isJson) {
+            // JSONのまま表示
+            document.getElementById(elementId).innerHTML = '<span class="note_data_json">' + jasons + '</span>';
+        } else {
+            obj = JSON.parse(jasons);
+            html = '<table class="note_list"><tr><th>#</th><th>ID / なまえ</th></tr>'
+            for (let i = 0; i < obj.length; i++) {
+                html += '<tr><td class="note_data_id">' +
+                    (i + 1) + '</td><td>' +
+                    '<a href="' + obj[i].url + '" target="_blank">' +
+                    obj[i].id + '</a><br><div class="note_data_name">' +
+                    obj[i].name + '</div></td></tr>';
+            }
+            html += '</table>';
 
-        document.getElementById(elementId).innerHTML = html;
+            document.getElementById(elementId).innerHTML = html;
+        }
     }
 }

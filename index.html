@@ -42,7 +42,9 @@
                     <label for="note_key2">フォローされている</label><br>
                 </div><br>
                 <input type="text" class="cp_input" id="note_id" placeholder="noteのIDを入力"><br>
-                <input type="button" class="cp_button" id="note_exe" value="リストを取得する" onclick="getNoteList()">
+                <input type="button" class="cp_button" id="note_exe" value="リストを取得する" onclick="getNoteList()"><br>
+                <input type="checkbox" name="note_json" id="note_json">
+                <label for="note_json" class="cp_checkbox_data_json">JSONで表示する</label>
             </form>
             <script>
                 document.getElementById('note_id').focus();

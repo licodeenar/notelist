@@ -116,7 +116,8 @@ a {
 }
 
 .note_data_id,
-.note_data_name {
+.note_data_name,
+.note_data_json {
     font-size: 1.3rem;
     color: #aaa;
     /*
@@ -225,4 +226,57 @@ a {
     left: 9px;
     background-color: #fff;
     border-radius: 50%;
+}
+
+
+/* チェックボックス */
+
+.cp_checkbox_data_json {
+    font-size: 1.5rem;
+    color: #888;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+.cp_checkbox_data_json {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 30px;
+    position: relative;
+    width: auto;
+}
+
+.cp_checkbox_data_json::before {
+    background: #fff;
+    border: 1px solid #888;
+    content: '';
+    display: block;
+    height: 16px;
+    width: 16px;
+    left: 5px;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+}
+
+.cp_checkbox_data_json::after {
+    border-right: 3px solid #2cb696;
+    border-bottom: 3px solid #2cb696;
+    content: '';
+    display: block;
+    height: 9px;
+    left: 10px;
+    margin-top: -7px;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform: rotate(45deg);
+    width: 5px;
+}
+
+input[type=checkbox]:checked+.cp_checkbox_data_json::after {
+    opacity: 1;
 }
