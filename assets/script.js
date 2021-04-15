@@ -1,6 +1,6 @@
 function getNoteList() {
     const resultDispId = 'note_result';
-    const api_key = 'AKfycbytT1NBiDEKEQYIyMNaC3qBo4ANuIfWxZUGWMS58mp4A9pzvbqEcRBHUbEqNU1wK-Ig';
+    const api_key = 'AKfycbzA0WDWzrXKRviGbZ7eh33h5k9VlcMG1M9LPRj_lkdr3IoyGzDmXoi-_vcD3n_fmXw-';
     let req = new XMLHttpRequest();
     let form = document.getElementById('setting');
     let url = 'https://script.google.com/macros/s/' + api_key +
@@ -40,12 +40,13 @@ function drawTable(jasons, elementId) {
         document.getElementById(elementId).innerHTML = '情報を取得できませんでした。';
     } else {
         obj = JSON.parse(jasons);
-        html = '<table class="note_list"><tr><th>#</th><th>ID</th></tr>'
+        html = '<table class="note_list"><tr><th>#</th><th>ID / なまえ</th></tr>'
         for (let i = 0; i < obj.length; i++) {
             html += '<tr><td>' +
                 (i + 1) + '</td><td>' +
                 '<a href="' + obj[i].url + '" target="_blank">' +
-                obj[i].id + '</a></td></tr>';
+                obj[i].id + '</a><br><div class="cp_name">' +
+                obj[i].name + '</div></td></tr>';
         }
         html += '</table>';
 
