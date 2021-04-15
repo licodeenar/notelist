@@ -20,20 +20,6 @@ a {
     color: #2cb696;
 }
 
-.cp_name {
-    font-size: 1.3rem;
-    color: #aaa;
-    /*
-    text-overflow: ellipsis;
-    -webkit-text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    overflow: hidden;
-    width: 200px;
-    white-space: nowrap;
-    margin: 0 auto;
-    align-items: center; */
-}
-
 @media (max-width: 670px) {
     /* スマホ */
     main {
@@ -127,6 +113,21 @@ a {
     color: #2cb696;
     background: #f5ffe5;
     padding: 10px 20px;
+}
+
+.note_data_id,
+.note_data_name {
+    font-size: 1.3rem;
+    color: #aaa;
+    /*
+    text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    width: 200px;
+    white-space: nowrap;
+    margin: 0 auto;
+    align-items: center; */
 }
 
 .note_list th,

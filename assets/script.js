@@ -42,10 +42,10 @@ function drawTable(jasons, elementId) {
         obj = JSON.parse(jasons);
         html = '<table class="note_list"><tr><th>#</th><th>ID / なまえ</th></tr>'
         for (let i = 0; i < obj.length; i++) {
-            html += '<tr><td>' +
+            html += '<tr><td class="note_data_id">' +
                 (i + 1) + '</td><td>' +
                 '<a href="' + obj[i].url + '" target="_blank">' +
-                obj[i].id + '</a><br><div class="cp_name">' +
+                obj[i].id + '</a><br><div class="note_data_name">' +
                 obj[i].name + '</div></td></tr>';
         }
         html += '</table>';
