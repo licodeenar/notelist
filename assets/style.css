@@ -115,6 +115,15 @@ a {
     padding: 10px 20px;
 }
 
+td.note_follow {
+    width: 55px;
+}
+
+td.note_data_id {
+    width: 60px;
+    padding: 5px;
+}
+
 .note_data_id,
 .note_data_name,
 .note_data_json {
