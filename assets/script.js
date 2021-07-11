@@ -1,6 +1,6 @@
 function getNoteList() {
     const resultDispId = 'note_result';
-    const api_key = 'AKfycbzA0WDWzrXKRviGbZ7eh33h5k9VlcMG1M9LPRj_lkdr3IoyGzDmXoi-_vcD3n_fmXw-';
+    const api_key = 'AKfycbx5UzrCM0My1dN4U6tOpfrJzC_gFOS97llkBUMWAk_HcwaPlThaN3H49zQFpgsugEo';
     let req = new XMLHttpRequest();
     let form = document.getElementById('setting');
     let url = 'https://script.google.com/macros/s/' + api_key +
@@ -50,8 +50,8 @@ function drawTable(jasons, elementId, isJson) {
                 html += '<tr><td class="note_data_id">' +
                     (i + 1) + '</td><td>' +
                     '<a href="' + obj[i].url + '" target="_blank">' +
-                    obj[i].id + '</a><br><div class="note_data_name">' +
-                    obj[i].name + '</div></td></tr>';
+                    obj[i].urlname + '</a><br><div class="note_data_name">' +
+                    obj[i].nickname + '</div></td></tr>';
             }
             html += '</table>';
 
