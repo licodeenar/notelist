@@ -8,13 +8,9 @@ function doGet(e){
   let out;
 
   try{
-    if(paramID !== '' && paramKey === 'followings'){
+    if(paramID !== '' && (paramKey === 'followings' || paramKey === 'followers')){
       // フォローを取得
-      result = getIDs_json_fetchAll(paramID, paramKey);
-
-    }else if(paramID !== '' && paramKey === 'followers'){
-      // フォロワーを取得
-      result = getIDs_json_fetchAll(paramID, paramKey);
+      result = main(paramID, paramKey);
 
     } else {
       throw new Error('パラメータが正しく指定されていません。');
