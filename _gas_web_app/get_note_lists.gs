@@ -1,160 +1,90 @@
-// Parser ライブラリ追加 スクリプトID
-// 1Mc8BthYthXx6CoIz90-JiSzSafVnT6U3t0z_W3hLTAX5ek4w0G_EIrNw
+'use strict';
+// --------------------------------------------------
+// fetchALLで非同期で処理を行う
+// フォローしているユーザのリストを取得する
+function main(userId, key) {
+  let users = [];
 
-const MAX_FWING = 100; //読み込むMAXページ数
-const MAX_FWER = 20; //読み込むMAXページ数
-const FETCH_MAX = 10; // fetchAll() で一度にフェッチするページ数
-const KEY_FOLLOWER = 'followers';
-const KEY_FOLLOWING = 'followings';
+  fetch_repeat:
+  for(let repeat = 0; repeat < CONF.MAX_REPEAT; repeat++){
+    let requests = [];
 
-function debug2(){
-  try{
-    getIDs_json_fetchAll('xxxxxxxx', 'followers');
-  }catch(e){
-    console.log(e);
+    // リクエストを生成
+    const start = repeat * CONF.FETCH_MAX + 1;
+    const end = start + CONF.FETCH_MAX;
+    for(let i = start; i <= end; i++){
+      requests.push(CONF.API_URL
+        .replace('#__userid__#', userId)
+        .replace('#__key__#', key) + i);
+    }
+
+    // 非同期でまとめて取得
+    const responses = UrlFetchApp.fetchAll(requests);
+
+    for(let i = 0; i < CONF.FETCH_MAX; i++){
+      const json_data = JSON.parse(responses[i].getContentText('UTF-8'))['data'];
+
+      // ユーザ情報を抽出
+      users = users.concat(getFollowList(json_data));
+
+      // 最後のページだったら終了
+      if(json_data.isLastPage === true){
+        break fetch_repeat;
+      }
+    }
   }
+
+  // 実行ログにユーザ名を表示 Debug
+  // printLog(users);
+
+  return users;
 }
 
 // --------------------------------------------------
-// fetchALLで非同期で処理を行う版
-// フォロー・フォロワーのユーザIDを取得する （Parser ライブラリを使用）
-function getIDs_json_fetchAll(userId, key) {
-  let noteURL = 'https://note.com/' + userId + '/' + key + '?page=';
-  let max;
-  let jasons = [];
+// フォローリストAPIの結果からユーザー情報を抽出
+function getFollowList(json){
+  const list = json['follows'];
+  let result = [];
 
-  // フォロワーとフォローでMAX値を変える
-  if(key === KEY_FOLLOWING){
-    max = MAX_FWING / FETCH_MAX;
-  }else{
-    max = MAX_FWER / FETCH_MAX;
-  }
-
-  // Nページ毎にまとめてフェッチ
-  for(let repeat = 0; repeat < max; repeat++){
-    let start = repeat * FETCH_MAX;
-    let end = start + FETCH_MAX;
-    let requests;
-    let parser;
-    let parserName;
-    let htmls;
-
-    requests = [];
-    for(let i = start + 1; i <= end; i++){
-      requests.push(noteURL + i);
-    }
-
-    // 非同期でN数のページを取得
-    htmls = UrlFetchApp.fetchAll(requests);
-
-    htmlAll = '';
-    for(let i = 0; i < FETCH_MAX; i++){
-      htmlAll += htmls[i].getContentText('UTF-8');
-    }
-
-    parser = Parser.data(htmlAll)
-      .from('<div class="m-userListItem" data-v-7b393662 data-v-7cfdcb31><a href="')
-      .to('" ')
-      .iterate();
-
-    parserName = Parser.data(htmlAll)
-      .from('data-v-7b393662>\n        ')
-      .to('\n')
-      .iterate();
+  for(let i = 0; i < list.length; i++){
     
-    if(parser.length <= 1 && parser[0].length > 100){
-      // 要素がない場合は終了
-      // ※ Parserの不具合？取得要素がない場合に
-      //　　htmlがそのまま返ってくることがある
-      //　　length > 100 で回避；
-      break;
+    let userURL = '';
+    let userName = '';
+    if(list[i].urlname === null){
+      // ゲストユーザ
+      userURL = 'https://note.com/_nourlname/?user_id=' + list[i].id;
+      userName = 'GUEST';
+    }
+    else if(list[i].customDomain === null){
+      // 通常ユーザ
+      userURL = 'https://note.com/' + list[i].urlname;
+      userName = list[i].urlname;
+
+    }
+    else{
+      // カスタムドメインユーザ
+      userURL = 'https://' + list[i].customDomain.host;
+      userName = list[i].urlname;
     }
 
-    // 取得した行からUserIDのみを抽出する
-    for (let i = 0; i < parser.length; i++) {
-      let tmp = parser[i]
-        .replace(/^\//, '')
-        .replace(/https:\/\/note.com\//,''); //ゲストユーザ用
-
-      let tmpURL;
-      if(tmp.substr(0, 4) === 'http'){
-        // 個別ドメインの場合そのまま
-        tmpURL = tmp;
-      }else{
-        // noteユーザの場合 https://note.com を追加
-        tmpURL = 'https://note.com/' + tmp;
-      }
-      // JSONに書き出し
-      jasons.push({id: tmp, url: tmpURL, name: parserName[i]});
-      // console.log({id: tmp, url: tmpURL, name: parserName[i]});
-      
-    }
-
-    if(jasons.length < ((repeat + 1) * FETCH_MAX * 20)){
-      // 要素がなくなったら次のループに行かずに終了
-      break;
-    }
+    // JSONに変換
+    result.push({
+      urlname: userName,
+      nickname: list[i].nickname,
+      url: userURL,
+      id: list[i].id
+    });
   }
-
-  console.log(JSON.stringify(jasons));
-  return jasons;
+  return result;
 }
 
-
-
-
-// 旧バージョン --------------------------------------------------
-// fetchで1ページ毎に処理を行う版
-// フォロー・フォロワーのユーザIDを取得する（Parser ライブラリを使用）
-function getIDs_json(userId, key, sheetName) {
-  let noteURL = 'https://note.com/' + userId + '/' + key + '?page=';
-  let html;
-  let parser;
-  let max;
-  let jasons = [];
-
-  // フォロワーとフォローでMAX値を変える
-  if(sheetName === SHEET_NAME_FOLLOWING){
-    max = MAX_FWING;
-  }else{
-    max = MAX_FWER;
+// --------------------------------------------------
+// 実行ログにユーザ名を出力する Debug用
+function printLog(users){
+  for(let i = 0; i < users.length; i++){
+    console.log('ユーザ名（' + (i + 1) + '）： ' + 
+      users[i].nickname + ' ' +
+      users[i].urlname + ' ' + 
+      users[i].url);
   }
-
-  // ページ毎に行をフェッチ
-  for(let page = 1; page <= max; page++){
-    // 以下のキーワードを含む行を全て取得する
-    html = UrlFetchApp.fetch(noteURL + page).getContentText('UTF-8');
-    parser = Parser.data(html)
-      .from('<div class="m-userListItem" data-v-7b393662 data-v-7cfdcb31><a href="')
-      .to('" ')
-      .iterate();
-    
-    if(parser.length <= 1 && parser[0].length > 100){
-      // ページに要素がなくなったら終了
-      break;
-    }
-
-    // 取得した行からUserIDのみを抽出する
-    for (let i = 0; i < parser.length; i++) {
-      let tmp = parser[i]
-        .replace(/https:\/\/note.com/,''); //ゲストユーザ用
-
-      let tmpURL;
-      if(tmp.substr(0, 4) === 'http'){
-        // 個別ドメインの場合そのまま
-        tmpURL = tmp;
-      }else{
-        // noteユーザの場合 https://note.com を追加
-        tmpURL = 'https://note.com' + tmp;
-      }
-      
-      // JSONに書き出し
-      jasons.push({id: tmp, url: tmpURL});
-      
-    }
-    // アクセス集中を防ぐためウェイト
-    Utilities.sleep(WAIT_SEC * 1000);
-  }
-
-  return jasons;
 }
